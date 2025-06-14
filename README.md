@@ -1,69 +1,54 @@
-# SafeOpener CTF Challenge Walkthrough (Beginner Friendly)
-
-## Challenge Summary
-
-- **Goal:** Recover the lost password for a virtual safe using a Java program.
-- **Submission Format:** `picoCTF{password}`
+# SafeOpener & SafeOpener 2 - CTF Walkthrough (Beginner Friendly)
 
 ---
 
-## Step 1: Read the Challenge and Find the Java File
+## SafeOpener (Java Source Provided)
 
-You are given `SafeOpener.java`. The goal is to find out what password will "open" the safe.
+### 1. Download & View the Code
 
----
-
-## Step 2: View the Code
-
-Open a terminal in the folder with `SafeOpener.java` and run:
+After downloading `SafeOpener.java`, open your terminal in the same folder and run:
 
 ```sh
 cat SafeOpener.java
 ```
-
-Or open it in any text editor (VS Code, nano, vim, etc.).
+Or open it in a text editor.
 
 ---
 
-## Step 3: Understand the Code
+### 2. Understand the Code
 
-Key points in the code:
-
-- The program asks you for a password.
-- It encodes your input to **Base64**.
-- It checks if the encoded password matches the string:
+- The program asks for a password.
+- It encodes your input with Base64.
+- It checks if your encoded input matches:
   ```
   cGwzYXMzX2wzdF9tM18xbnQwX3RoM19zYWYz
   ```
 
 ---
 
-## Step 4: Decode the Target String
+### 3. Decode the Target String
 
-You need to find what original password, when Base64-encoded, gives this string.
+Use your terminal, python, or an online tool.
 
-### Option A: Use the Terminal
-
+**Terminal:**
 ```sh
 echo cGwzYXMzX2wzdF9tM18xbnQwX3RoM19zYWYz | base64 -d
 ```
 
-### Option B: Use Python
-
+**Python:**
 ```python
 import base64
 print(base64.b64decode("cGwzYXMzX2wzdF9tM18xbnQwX3RoM19zYWYz").decode())
 ```
 
-### Option C: Use an Online Tool
-
-Visit [https://www.base64decode.org/](https://www.base64decode.org/), paste the string, and decode it.
+**Online:**  
+[https://www.base64decode.org/](https://www.base64decode.org/)
 
 ---
 
-## Step 5: Get the Password
+### 4. Get the Password
 
-The decoded string is:
+Decoded value:
 
 ```
 pl3as3_l3t_m3_1nt0_th3_saf3
@@ -71,32 +56,24 @@ pl3as3_l3t_m3_1nt0_th3_saf3
 
 ---
 
-## Step 6: Test the Password
+### 5. Test the Password
 
-Compile and run the Java program:
+Compile and run the Java file:
 
 ```sh
 javac SafeOpener.java
 java SafeOpener
 ```
-
-When prompted, enter:
-
+Enter:
 ```
 pl3as3_l3t_m3_1nt0_th3_saf3
 ```
-
-If correct, you should see:
-
-```
-Sesame open
-```
+You should see:  
+`Sesame open`
 
 ---
 
-## Step 7: Format and Submit the Flag
-
-The flag to submit is:
+### 6. Format the Flag
 
 ```
 picoCTF{pl3as3_l3t_m3_1nt0_th3_saf3}
@@ -104,13 +81,67 @@ picoCTF{pl3as3_l3t_m3_1nt0_th3_saf3}
 
 ---
 
-## Recap & CTF Tips
+## SafeOpener 2 (Class File Provided)
 
-- **Read the code carefully.** Look for checks against hidden or encoded values.
-- **Recognize encoding schemes** like Base64, hex, etc.
-- **Use available tools** (command line, online, Python) to decode as needed.
-- **Format your answer** exactly as the challenge requires.
+### 1. Download & View the File
+
+After downloading `SafeOpener.class`, you might see it contains unreadable binary data if you try:
+
+```sh
+cat SafeOpener.class
+```
+
+### 2. Decompile the Class File
+
+You need to reverse the compiled Java code. Use a Java decompiler.
+
+#### **Option A: Online Decompiler**
+- Go to [https://www.javadecompilers.com/](https://www.javadecompilers.com/)
+- Upload your `SafeOpener.class` file.
+- The site will show you the readable Java code.
+
+#### **Option B: Use `javap` (for method names/strings)**
+If you can't use an online tool, you can often reveal useful strings with:
+
+```sh
+strings SafeOpener.class
+```
+
+Look for anything that looks like a flag, password, or check.
 
 ---
 
-**Congrats!** You just solved a classic beginner CTF challenge. Keep practicing and you'll get even faster!
+### 3. Analyze for the Flag
+
+In your `strings` output, you may see something like:
+
+```
+picoCTF{SAf3_0p3n3rr_y0u_solv3d_it_198203f7}
+```
+
+or
+
+- If you decompiled the file, look for any hardcoded strings or logic that prints or checks for a password/flag.
+
+---
+
+### 4. Submit the Flag
+
+Flag from the `.class` file:
+```
+picoCTF{SAf3_0p3n3rr_y0u_solv3d_it_198203f7}
+```
+
+---
+
+## General Tips for Both Challenges
+
+- **If you get a `.java` file:** read the code and look for checks or encodings.
+- **If you get a `.class` file:** decompile it or search for strings to find flags or passwords.
+- **Use online tools:** for decoding (Base64, hex) or decompiling (`.class` files).
+- **Always format your answer** as required, e.g., `picoCTF{your_flag_here}`.
+
+---
+
+**Congratulations!**  
+You just learned how to analyze both Java source and compiled class files for CTFs.
